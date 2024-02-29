@@ -8,6 +8,12 @@ Wymagania wstępne:
 
 #### ansible, helm, python, kubectl, git.
 
+Serwery:
+
+CAX11, architektóra Arm64, Ubuntu 22.04.
+
+*Wybierajac architektóre x86 (Intel/AMD) pamiętaj o dostosowaniu obrazu! OS możesz wybrać według Twojego uznania.*
+
 Jeżeli bedzie brakować jakiś paczek, kubespray upomni się o nie. 
 
 
