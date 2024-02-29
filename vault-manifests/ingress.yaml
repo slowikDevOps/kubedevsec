@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vault-ui
+  namespace: vault
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  ingressClassName: "nginx"
+  rules:
+  - host: vault.sl0vik.online
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: vault-ui
+            port:
+              number: 8200
+  tls:
+  - hosts:
+    - vault.sl0vik.online
+    secretName: sl0vik-wildcard

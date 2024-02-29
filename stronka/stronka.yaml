@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stronka-deployment
+  namespace: stronka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: website
+  template:
+    metadata:
+      labels:
+        app: website
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: "myapp"
+        vault.hashicorp.com/agent-inject-template-index.html: |
+          {{- with secret "secret/html" -}}
+          {{ .Data.data.index }}
+          {{- end }}
+    spec:
+      serviceAccountName: app
+      containers:
+      - name: stronka
+        image: sl0vik/sdevops-arm:0.0.3
+        ports:
+        - containerPort: 8080
+        env:
+        - name: VAULT_ADDR
+          value: "https://vault.sl0vik.online"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stronka-service
+  namespace: stronka
+spec:
+  selector:
+    app: website
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: stronka-ingress
+  namespace: stronka
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  ingressClassName: "nginx"
+  rules:
+  - host: devops.sl0vik.online
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: stronka-service
+            port:
+              number: 8080
+  tls:
+  - hosts:
+    - devops.sl0vik.online
+    secretName: sl0vik-wildcard
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: stronka
+  name: app
+  labels:
+    app: website

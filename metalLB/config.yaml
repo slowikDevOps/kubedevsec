@@ -1,0 +1,19 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: my-ip-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 95.217.240.241-95.217.240.241 # Twój dodatkowy adres IP
+
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: my-l2-advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - my-ip-pool
+
