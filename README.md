@@ -1,12 +1,14 @@
 # KubeDevSec! Wdrożenie on-premise z wykorzystaniem Kubespray, MetalLB, Vault
 ##### Autor: Szymon Słowicki
 
+https://devops.sl0vik.online
+
 
 Wymagania wstępne:
 
-#### ansible, helm, kubectl, git, linuxowe zacięcie. 
+#### ansible, helm, python, kubectl, git.
 
-
+Jeżeli bedzie brakować jakiś paczek, kubespray upomni się o nie. 
 
 
 #### Rekomendacje dla użytkowników bez doświadczenia z Linuksem:
@@ -174,7 +176,7 @@ Jeżeli otrzymasz błąd, sprawdź na którym worker node uruchomił się vault,
 
 `chmod -R 777 /vault` i spróbuj ponownie! 
 
-następnie `vault operator unseal` (musisz wykonać trzy razy podając za każdym razem inny Unseal Key)
+następnie `vault operator unseal` (musisz wykonać trzy razy podając za każdym razem inny **Unseal Key**)
 
 `vault login` (klikasz enter i następnie wprowadzasz token) np. hvs.b6Ni7vdasdasdasdasdasdasdI
 
