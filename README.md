@@ -9,45 +9,37 @@ Wymagania wstępne:
 
 
 
-### Rekomendacje dla użytkowników bez doświadczenia z Linuksem:
+#### Rekomendacje dla użytkowników bez doświadczenia z Linuksem:
 
-- Windows: Zalecam korzystanie z WSL2 (Można się z nim polubić!)
+- Windows: WSL2
 - MacOS: ZSH
 
 ### Kilka słów od autora
 
 
 
-*Niechciałbym aby ten projekt, był "projektem-corowym" dla wszystkich osób szukających nowej pracy. Został tak zaprojektowany aby nic innego poza plikiem `index.html` nie było
-montowane przez Vault init container. Jak rozwinąć swój projekt?*
+*Niechciałbym aby ten projekt, był **"projektem-corowym"** dla wszystkich, którzy zdecydują się go wdrożyć. Zaprojektowałem go tak, aby nic innego poza plikiem `index.html` nie było montowane przez **Vault init container**. Jak rozwinąć swój projekt?*
 
-- *Uruchom coś podobnego, dodaj do tego monitoring (prometheus + grafana) i skonfiguruj mailowe alerty. (sam monitoring klastra wystarczy, jak będziesz monitorował aplikacje z użyciem*
-node-exportera, będzie bomba!) 
+- *Monitoring (prometheus + grafana) i  mailowe alerty. Jeżeli jesteś bardziej ambitny, możesz pokusić się o monitorowanie Twojej aplikacji. np. wykorzystanie CPU/RAM* 
 
-- *Potrzebujesz supportu? Pisz na LI, chętnie pomogę! Jako członek wkontenerachArmy pomagam userom mierzyć się z takimi silnymi openentami jakimi są k8s/helm itd :) 
-Szukasz/nie możesz znaleźć pracy? Napisz, coś doradzimy. :)*
+- *Potrzebujesz supportu? Pisz na LI, chętnie pomogę! itd :) 
+Szukasz/nie możesz znaleźć pracy? Napisz, podkręcimy Twoje CV, sprawdzę jakich skilli Ci brakuje.*
 
-
-
-### BONUS: Poniższe komendy mogą się przydać gdy pójdzie coś nie tak:
+### BONUS: Gdy pójdzie coś nie tak -> restart klastra:
 
 
 `ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root reset.yml`
 
 Przy restarcie musiałem restartować VM z poziomu panelu Hetznera i puścić playbook jeszcze raz.
 
-
-#### stawiam klaster (nie pomyl z restartem )
+#### Postawienie klastra (nie pomyl z restartem )
 
 `ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml`
 
 
-
-
-
-
 ## PIERWSZY KOMPONENT 1. KUBESPRAY DO STAWIANIA KLASTRA
 
+Pamiętaj, żeby użyć własnych adresów IP w kroku nr IV. 
 
 ```
 1. git clone https://github.com/kubernetes-sigs/kubespray.git
@@ -70,19 +62,18 @@ Przy restarcie musiałem restartować VM z poziomu panelu Hetznera i puścić pl
 
 Zmieniamy **calico** na **cilium**!
 
-
-Tutaj można to sprawdzić:
+Tutaj można sprawdzić dlaczego calico gryzię się z MetalLB:
 https://metallb.universe.tf/installation/network-addons/
 https://metallb.universe.tf/configuration/calico/
 
 
-7. Nie chcemy dwóch masterów, z lokalizacji kubespray/inventory/mycluster modyfikujemy linię 19, komentując ją. 
+7. Nie chcemy dwóch masterów, z lokalizacji `kubespray/inventory/mycluster` modyfikujemy linię 19 w pliku `hosts.yaml`, komentując ją. 
 
 *# node2:*
 
 8. #### Playbook musi być odpalony jako root! 
 
-Tak ma wyglądać struktura pliku config w katalogu .ssh
+Moja struktura pliku config w katalogu .ssh
 ```
 Host *
         IdentityFile ~/.ssh/id_rsa
@@ -134,15 +125,15 @@ helm upgrade --install ingress-nginx ingress-nginx \
 Przechodzimy do katalogu:
 `cd vault-manifests`
 
-Ogarniamy pv i storage classe i ingressa:
+Ogarniamy pv i storage class i ingressa:
+
+`kubectl create namespace vault` 
 
 `kubectl apply -f pv.yaml`
 
 `kubectl apply -f storageclass.yaml`
 
-`kubectl apply -f ingress.yaml`  (tutaj możesz być poproszony/a o stworzenie namespace), jak nie masz pomysłu to łap:
-
-`kubectl create namespace vault` 
+`kubectl apply -f ingress.yaml`
 
 **tworzę sekrety z certem:**
 
