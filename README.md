@@ -20,9 +20,11 @@ Jeżeli bedzie brakować jakiś paczek, kubespray upomni się o nie.
 
 
 
-*Niechciałbym aby ten projekt, był **"projektem-corowym"** dla wszystkich, którzy zdecydują się go wdrożyć. Zaprojektowałem go tak, aby nic innego poza plikiem `index.html` nie było montowane przez **Vault init container**. Jak rozwinąć swój projekt?*
+*Niechciałbym aby ten projekt, był **"projektem-corowym"** dla wszystkich, którzy zdecydują się go wdrożyć. Zaprojektowałem go tak, aby nic innego poza plikiem `index.html` nie było montowane przez **Vault init container**. Jak rozwinąć swój projekt? Przykłady:*
 
 - *Monitoring (prometheus + grafana) i  mailowe alerty. Jeżeli jesteś bardziej ambitny, możesz pokusić się o monitorowanie Twojej aplikacji. np. wykorzystanie CPU/RAM* 
+
+- *CertMenager aby certyfikaty odświeżały się cyklicznie i automatycznie* 
 
 - *Potrzebujesz supportu? Pisz na LI, chętnie pomogę! itd :) 
 Szukasz/nie możesz znaleźć pracy? Napisz, podkręcimy Twoje CV, sprawdzę jakich skilli Ci brakuje.*
