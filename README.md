@@ -123,9 +123,9 @@ helm upgrade --install ingress-nginx ingress-nginx \
 
 `helm install metallb metallb/metallb --create-namespace -n metallb-system`
 
-1. config, przechodzimy do katalogu official-docs/metealLB
+1. config, przechodzimy do katalogu metalLB
 
-`cd /official-docs/metealLB`
+`cd /metalLB`
 
 `kubectl apply -f config.yaml`
 
